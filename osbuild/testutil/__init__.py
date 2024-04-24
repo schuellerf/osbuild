@@ -67,6 +67,14 @@ def assert_jsonschema_error_contains(res, expected_err, expected_num_errs=None):
                for err_msg in err_msgs), f"{expected_err} not found in {err_msgs}"
 
 
+def assert_equal(a, b):
+    assert a == b, f"Equality check failed: '{a}' == '{b}'"
+
+
+def assert_file_exists(f:pathlib.Path):
+    assert f.exists(), f"'{str(f)}' not found"
+
+
 class MockCommandCallArgs:
     """MockCommandCallArgs provides the arguments a mocked command
     was called with.
@@ -149,7 +157,7 @@ def make_container(tmp_path, fake_content, base="scratch"):
     try:
         yield container_id
     finally:
-        subprocess.check_call(["podman", "image", "rm", container_id])
+        subprocess.check_call(["podman", "image", "rm", "--no-prune", container_id])
 
 
 @contextlib.contextmanager

@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import os
+import pathlib
 import subprocess
 import sys
 
@@ -22,6 +23,15 @@ def main(inputs, output, options):
             elif dest_type == "oci":
                 path = destination["path"]
                 dest = f"oci:{output}{path}"
+                pathlib.Path(f"{output}{path}").mkdir(parents=True, exist_ok=True)
+            elif dest_type == "oci-archive":
+                path = destination["path"]
+                dest = f"oci-archive:{output}{path}"
+                pathlib.Path(f"{output}{path}").parent.mkdir(parents=True, exist_ok=True)
+            elif dest_type == "dir":
+                path = destination["path"]
+                dest = f"dir:{output}{path}"
+                pathlib.Path(f"{output}{path}").mkdir(parents=True, exist_ok=True)
             else:
                 raise ValueError(f"Unknown destination type '{dest_type}'")
 
